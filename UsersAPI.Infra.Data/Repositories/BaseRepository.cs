@@ -38,7 +38,7 @@ namespace UsersAPI.Infra.Data.Repositories
             return dataContext?.Set<TEntity>().Find(id);
         }
 
-        public virtual TEntity? GetById(Func<TEntity, bool> where)
+        public virtual TEntity? Get(Func<TEntity, bool> where)
         {
             return dataContext?.Set<TEntity>().FirstOrDefault(where);
         }

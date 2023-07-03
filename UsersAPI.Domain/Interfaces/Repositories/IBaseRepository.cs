@@ -10,6 +10,6 @@
         List<TEntity> GetAll();
         List<TEntity> GetAll(Func<TEntity, bool> where);
         TEntity? GetById(TKey id);
-        TEntity? GetById(Func<TEntity, bool> where);
+        TEntity? Get(Func<TEntity, bool> where);
     }
 }
