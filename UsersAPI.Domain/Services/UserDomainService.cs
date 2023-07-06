@@ -16,7 +16,7 @@ namespace UsersAPI.Domain.Services
 
         public void Add(User user)
         {
-            if (Get(user?.Email) != null)
+            if (Get(user.Email) != null)
                 throw new EmailAlreadyExistsException(user.Email);
 
             unitOfWork?.UserRepository.Add(user);
@@ -42,7 +42,7 @@ namespace UsersAPI.Domain.Services
 
         public User? Get(string email)
         {
-            return unitOfWork?.UserRepository.Get(u => u.Equals(email));
+           return unitOfWork?.UserRepository.Get(u => u.Email.Equals(email));
         }
 
         public User? Get(string email, string password)
