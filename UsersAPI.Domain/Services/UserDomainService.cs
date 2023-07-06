@@ -1,4 +1,5 @@
 ﻿using UsersAPI.Domain.Entities;
+using UsersAPI.Domain.Exceptions;
 using UsersAPI.Domain.Interfaces.Repositories;
 using UsersAPI.Domain.Interfaces.Services;
 
@@ -15,6 +16,9 @@ namespace UsersAPI.Domain.Services
 
         public void Add(User user)
         {
+            if (Get(user?.Email) != null)
+                throw new EmailAlreadyExistsException(user.Email);
+
             unitOfWork?.UserRepository.Add(user);
             unitOfWork?.SaveChanges();
         }
@@ -33,12 +37,12 @@ namespace UsersAPI.Domain.Services
 
         public User? Get(Guid id)
         {
-           return unitOfWork?.UserRepository.GetById(id);
+            return unitOfWork?.UserRepository.GetById(id);
         }
 
         public User? Get(string email)
         {
-            return unitOfWork?.UserRepository.Get(u=>u.Equals(email));
+            return unitOfWork?.UserRepository.Get(u => u.Equals(email));
         }
 
         public User? Get(string email, string password)

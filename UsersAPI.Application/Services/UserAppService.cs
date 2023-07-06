@@ -3,6 +3,7 @@ using UsersAPI.Application.Dtos.Requests;
 using UsersAPI.Application.Dtos.Responses;
 using UsersAPI.Application.Interfaces.Application;
 using UsersAPI.Domain.Entities;
+using UsersAPI.Domain.Exceptions;
 using UsersAPI.Domain.Interfaces.Services;
 
 namespace UsersAPI.Application.Services
@@ -19,18 +20,26 @@ namespace UsersAPI.Application.Services
 
         public UserResponseDto Add(UserAddRequestDto userDto)
         {
-            var user = new User
+            try
             {
-                Id = Guid.NewGuid(),
-                Name = userDto.Name,
-                Email = userDto.Email,
-                Password = userDto.Password,
-                CreatedAt = DateTime.Now
-            };
+                var user = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Name = userDto.Name,
+                    Email = userDto.Email,
+                    Password = userDto.Password,
+                    CreatedAt = DateTime.Now
+                };
 
-            userDomainService?.Add(user);
+                userDomainService?.Add(user);
 
-            return mapper.Map<UserResponseDto>(user);
+                return mapper.Map<UserResponseDto>(user);
+
+            }
+            catch (EmailAlreadyExistsException ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
         }
 
         public UserResponseDto Update(Guid id, UserUpdateRequestDto userDto)

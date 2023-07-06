@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using UsersAPI.Domain.Entities;
 
 namespace UsersAPI.Infra.Data.Contexts
 {
     public class DataContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DataContext(DbContextOptions<DataContext> options) : base(options){}
+      
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "bd_users");
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+        public DbSet<User> Users { get; set; }
     }
 }
