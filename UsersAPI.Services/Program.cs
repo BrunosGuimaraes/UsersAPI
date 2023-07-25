@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddSwaggerDoc();
-builder.Services.AddJwtBearer();
+builder.Services.AddJwtBearer(builder.Configuration);
 builder.Services.AddCorsPolicy();
 builder.Services.AddDependencyInjection();
 builder.Services.AddAutoMapperConfig();
